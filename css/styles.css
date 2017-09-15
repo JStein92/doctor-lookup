@@ -1,5 +1,19 @@
+body{
+  background-color: #fcfdff;
+  font-family: 'Lato', sans-serif;
+}
 .jumbotron{
   text-align: center;
+  background-image: url("http://www.xpats.com/sites/default/files/gp_1.jpg");
+  background-size: cover;
+  background-position: center;
+  opacity: .7;
+  height: 400px;
+}
+.jumbotron h1{
+  font-size: 8em;
+  color: white;
+   text-shadow: 4px 4px #000000;
 }
 form{
   padding: 10px;
@@ -15,4 +29,21 @@ label{
 }
 .panel-heading img{
   width: 65px;
+}
+
+#specialtiesOutput{
+  height: 200px;
+}
+#outputSearch{
+  font-size: .8em;
+  display: none;
+
+}
+#outputSearch p{
+line-height: 4px;
+
+}
+
+.liHeader{
+  font-weight: bold;
 }

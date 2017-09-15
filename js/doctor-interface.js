@@ -14,10 +14,10 @@ $(function(){
     const name = $('#name').val();
     $('#name').val("");
 
-    const specialties = $('#specialtiesOutput').val();
-    console.log(specialties.join('%2C'));
+    const sortBy = $('#sortByOutput').val();
+    const specialties = $('#specialtiesOutput').val().join('%2C').replace( /\s/g, "").toLowerCase();
 
-    doctorSearch.search(location,issue,name);
+    doctorSearch.search(location,issue,name,specialties,sortBy);
 
   });
 });

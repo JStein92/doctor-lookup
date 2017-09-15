@@ -6,6 +6,7 @@
   <script type="text/javascript" src="build/js/app.js"></script>
   <script src="bower_components/moment/min/moment.min.js"></script>
   <link rel="stylesheet" href="css/styles.css">
+  <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet"> 
     <title>Doctor Lookup</title>
   </head>
   <body>
@@ -32,8 +33,20 @@
           <option value="">Any</option>
         </select>
 
+        <label for="sortBy">Sort by</label>
+        <select class="form-control" id="sortByOutput" name="">
+          <option value="distance-asc">Distance</option>
+          <option value="full-name-asc">Name A-Z</option>
+          <option value="best-match-asc">Best Match</option>
+        </select>
+
+
         <button type="submit" name="button" class="btn btn-info">Search!</button>
       </form>
+
+      <div id="outputSearch" class="well">
+
+      </div>
 
       <div id="output">
 

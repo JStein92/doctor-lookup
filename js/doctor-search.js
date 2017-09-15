@@ -23,7 +23,7 @@ export class DoctorSearch{
     specialtiesPromise.then(function(response){
       let body = JSON.parse(response);
       for (var i = 0; i < body.data.length; i++) {
-          $('#specialtiesOutput').append(`<option>${body.data[i].name}</option>`);
+          $('#specialtiesOutput').append(`<option value = ${body.data[i].uid}>${body.data[i].name}</option>`);
       }
 
     }, function(error){
@@ -31,12 +31,12 @@ export class DoctorSearch{
     });
   }
 
-  doctorPromise(lat,lng,issue,name, specialities){
+  doctorPromise(lat,lng,issue,name,specialities,sortBy){
     //console.log("doctor promise");
     let doctorPromise = new Promise(function(resolve, reject) {
       //console.log('start d prom');
       let request = new XMLHttpRequest();
-      let url = `https://api.betterdoctor.com/2016-03-01/doctors?name=${name}&query=${issue}&specialty_uid=${specialities}&location=${lat}%2C${lng}%2C100&user_location=${lat}%2C${lng}&skip=0&limit=10&user_key=${apiKey}`;
+      let url = `https://api.betterdoctor.com/2016-03-01/doctors?name=${name}&query=${issue}&specialty_uid=${specialities}&location=${lat}%2C${lng}%2C100&user_location=${lat}%2C${lng}&skip=0&sort=${sortBy}&limit=10&user_key=${apiKey}`;
       request.onload = function() {
         if (this.status === 200) {
           //console.log('doctor promise 200');
@@ -54,17 +54,25 @@ export class DoctorSearch{
       //console.log("doctor promise then");
       let body = JSON.parse(response);
       $('#output').text('');
+        $('#outputSearch').text('');
+        $('#outputSearch').show();
+      $('#outputSearch').append(`<p>Showing ${body.data.length}/${body.meta.total} results for doctors near ${lat},${lng}, sorted by ${sortBy}</div></p>`);
+      $('#outputSearch').append(`<p>Issue: ${issue}</p>`);
+      $('#outputSearch').append(`<p>Name: ${name}</p>`);
+      $('#outputSearch').append(`<p>Specialities: ${specialities}</p>`);
+
       if (!body.data[0]){
           $('#output').append('Sorry, no doctors found with this criteria.');
       } else {
+
         for (let i = 0; i < 10; i++) {
           $('#output').append(`<div class="panel panel-default">
           <div class="panel-heading"><img src = '${body.data[i].profile.image_url}'> ${body.data[i].profile.first_name} ${body.data[i].profile.last_name}</div>
           <ul class='well'>
-            <li>Practice: ${body.data[i].practices[0].name}</li>
-            <li>Address: ${body.data[i].practices[0].visit_address.street}, ${body.data[i].practices[0].visit_address.city}, ${body.data[i].practices[0].visit_address.state}, ${body.data[i].practices[0].visit_address.zip} (${body.data[i].practices[0].distance.toFixed(1)} miles away)</li>
-            <li>Phone: ${body.data[i].practices[0].phones[0].number}</li>
-            <li>Seeing new Patients: ${body.data[i].practices[0].accepts_new_patients}</li>
+            <li><span class = 'liHeader'>Practice:</span> ${body.data[i].practices[0].name}</li>
+            <li><span class = 'liHeader'>Address:</span> ${body.data[i].practices[0].visit_address.street}, ${body.data[i].practices[0].visit_address.city}, ${body.data[i].practices[0].visit_address.state}, ${body.data[i].practices[0].visit_address.zip} (${body.data[i].practices[0].distance.toFixed(1)} miles away)</li>
+            <li><span class = 'liHeader'>Phone:</span> ${body.data[i].practices[0].phones[0].number}</li>
+            <li><span class = 'liHeader'>Seeing new Patients:</span> ${body.data[i].practices[0].accepts_new_patients}</li>
           </ul>
           <div class="panel-body">${body.data[i].profile.bio}
           <p><a href ='${body.data[i].practices[0].website}'>Website</a></p>
@@ -78,7 +86,7 @@ export class DoctorSearch{
     });
   }
 
-  search(location,issue,name){
+  search(location,issue,name, specialities,sortBy){
     let that = this;
     let geocodePromise = new Promise(function(resolve,reject) {
       let request = new XMLHttpRequest();
@@ -98,7 +106,7 @@ export class DoctorSearch{
       let body = JSON.parse(response);
       let lat = body.results[0].geometry.location.lat;
       let lng = body.results[0].geometry.location.lng;
-      that.doctorPromise(lat,lng,issue,name);
+      that.doctorPromise(lat,lng,issue,name,specialities,sortBy);
       //console.log(body.results[0].geometry.location.lat + " " + body.results[0].geometry.location.lng);
     }, function(error){
       $('.output').text(`Could not parse address! ${error.message}`);
