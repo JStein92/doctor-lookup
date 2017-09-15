@@ -1,0 +1,18 @@
+.jumbotron{
+  text-align: center;
+}
+form{
+  padding: 10px;
+}
+label{
+  margin-top: 10px;
+}
+.btn-info{
+  margin-top: 10px;
+}
+.panel-heading{
+  font-size: 2em;
+}
+.panel-heading img{
+  width: 65px;
+}
